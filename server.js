@@ -59,7 +59,7 @@ sockserver.on('connection', function(conn) {
   });
 });
 var fs = require('fs');
-var index = fs.readFileSync('views/index.html');
+//var index = fs.readFileSync('views/index.html');
 var server = http.createServer(
   function(req,res){
     res.writeHead(200, {'Content-Type': 'text/plain'});
