@@ -12,6 +12,7 @@ var http = require('http'),
 var http1 =require('http').Server(app);
 var mysql      = require('mysql');
 var io = require('socket.io')(http1);
+var msg_total;
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
