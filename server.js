@@ -1,39 +1,4 @@
-var express = require('express');
-var app = express();
-
-// set the port of our application
-// process.env.PORT lets the port be set by Heroku
-var port = process.env.PORT || 3000;
-////////////////////
-var http = require('http'),
-    sockjs = require('sockjs'),
-    sockserver = sockjs.createServer(),
-    connections = [];
-var http1 =require('http').Server(app);
 var mysql      = require('mysql');
-var io = require('socket.io')(http1);
-// set the view engine to ejs
-app.set('view engine', 'ejs');
-
-// make express look in the public directory for assets (css/js/img)
-app.use(express.static(__dirname + '/public'));
-
-// set the home page route
-app.get('/', function(req, res) {
-
-	// ejs render automatically looks in the views folder
-	res.render('index');
-});
-
-app.listen(port, function() {
-	console.log('Our app is running on http://localhost:' + port);
-});
-var io = require('socket.io')(http1);
-io.on('connection', function(socket){
-    socket.on('chat message', function(msg){
-        io.emit('chat message', msg_total);
-    });
-});
 var db_connection = mysql.createConnection({
   host     : '127.0.0.1',
   user     : 'root',
@@ -49,6 +14,20 @@ if(!err) {
 });
 
     
+var msg_total;
+var express = require('express');
+var app = express();
+var http = require('http'),
+    sockjs = require('sockjs'),
+    sockserver = sockjs.createServer(),
+    connections = [];
+var http1 =require('http').Server(app);
+var io = require('socket.io')(http1);
+io.on('connection', function(socket){
+    socket.on('chat message', function(msg){
+        io.emit('chat message', msg_total);
+    });
+});
 
 sockserver.on('connection', function(conn) {
   console.log('Connected');
@@ -79,7 +58,33 @@ sockserver.on('connection', function(conn) {
     });
   });
 });
-
-var server = http.createServer();
+var fs = require('fs');
+var index = fs.readFileSync('views/index.ejs');
+var server = http.createServer(
+  function(req,res){
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end(index);
+  }
+);
 sockserver.installHandlers(server, {prefix:'/sockserver'});
-server.listen(port, '0.0.0.0');
+
+server.listen(3000, '0.0.0.0'); 
+
+
+// var port = process.env.PORT || 8080;
+// // set the view engine to ejs
+// app.set('view engine', 'ejs');
+
+// // make express look in the public directory for assets (css/js/img)
+// app.use(express.static(__dirname + '/public'));
+
+// // set the home page route
+// app.get('/', function(req, res) {
+
+// 	// ejs render automatically looks in the views folder
+// 	res.render('index');
+// });
+
+// app.listen(port, function() {
+// 	console.log('Our app is running on http://localhost:' + port);
+// });
