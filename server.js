@@ -61,27 +61,30 @@ sockserver.on('connection', function(conn) {
 var fs = require('fs');
 //var index = fs.readFileSync('views/index.html');
 var server = http.createServer(
-  // function(req,res){
-  //   res.writeHead(200, {'Content-Type': 'text/plain'});
-  //   res.end("123");
-  // }
+  function(req,res){
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end("123");
+  }
 );
 sockserver.installHandlers(server, {prefix:'/sockserver'});
 
 server.listen(3000, '0.0.0.0'); 
 
 
-// var port = process.env.PORT || 8080;
-// // set the view engine to ejs
-// app.set('view engine', 'ejs');
+var port = process.env.PORT || 4000;
+// set the view engine to ejs
+app.set('view engine', 'ejs');
 
-// // make express look in the public directory for assets (css/js/img)
-// app.use(express.static(__dirname + '/public'));
+// make express look in the public directory for assets (css/js/img)
+app.use(express.static(__dirname + '/public'));
 
-// // set the home page route
- app.get('/', function(req, res) {
-   res.end("123");
-// 	// ejs render automatically looks in the views folder
-// 	res.render('index');
- });
+// set the home page route
+app.get('/', function(req, res) {
 
+	// ejs render automatically looks in the views folder
+	res.render('index');
+});
+
+http.listen(port, function() {
+	console.log('Our app is running on http://localhost:' + port);
+});
