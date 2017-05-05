@@ -12,7 +12,6 @@ var http = require('http'),
 var http1 =require('http').Server(app);
 var mysql      = require('mysql');
 var io = require('socket.io')(http1);
-var msg_total;
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
@@ -26,7 +25,7 @@ app.get('/', function(req, res) {
 	res.render('index');
 });
 
-http1.listen(port, function() {
+app.listen(port, function() {
 	console.log('Our app is running on http://localhost:' + port);
 });
 var io = require('socket.io')(http1);
@@ -83,4 +82,4 @@ sockserver.on('connection', function(conn) {
 
 var server = http.createServer();
 sockserver.installHandlers(server, {prefix:'/sockserver'});
-server.listen(3000, '0.0.0.0');
+server.listen(port, '0.0.0.0');
