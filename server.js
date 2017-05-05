@@ -61,10 +61,10 @@ sockserver.on('connection', function(conn) {
 var fs = require('fs');
 //var index = fs.readFileSync('views/index.html');
 var server = http.createServer(
-  function(req,res){
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end("123");
-  }
+  // function(req,res){
+  //   res.writeHead(200, {'Content-Type': 'text/plain'});
+  //   res.end("123");
+  // }
 );
 sockserver.installHandlers(server, {prefix:'/sockserver'});
 
@@ -79,9 +79,9 @@ server.listen(3000, '0.0.0.0');
 // app.use(express.static(__dirname + '/public'));
 
 // // set the home page route
-// app.get('/', function(req, res) {
-
+ app.get('/', function(req, res) {
+   res.end("123");
 // 	// ejs render automatically looks in the views folder
 // 	res.render('index');
-// });
+ });
 
