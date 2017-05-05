@@ -26,7 +26,7 @@ app.get('/', function(req, res) {
 	res.render('index');
 });
 
-app.listen(port, function() {
+http1.listen(port, function() {
 	console.log('Our app is running on http://localhost:' + port);
 });
 var io = require('socket.io')(http1);
