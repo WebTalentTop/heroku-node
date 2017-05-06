@@ -60,16 +60,18 @@ sockserver.on('connection', function(conn) {
 });
 var fs = require('fs');
 var port = process.env.PORT || 3000;
-//var index = fs.readFileSync('views/index.html');
-var server = http.createServer(
-  function(req,res){
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end("123");
-  }
-);
-sockserver.installHandlers(server, {prefix:'/sockserver'});
+fs.readFile("views/index.ejs", function(err, data){
+  var server = http.createServer(
+    function(req,res){
+      res.writeHead(200, {'Content-Type': 'text/plain'});
+      res.write(data);
+      res.end();
+    }
+  );
+  sockserver.installHandlers(server, {prefix:'/sockserver'});
+  server.listen(port); 
 
-server.listen(port); 
+});
 
 
 // var port = process.env.PORT || 4000;
