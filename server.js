@@ -63,8 +63,7 @@ var port = process.env.PORT || 3000;
 
   var server = http.createServer(
     function(req,res){
-      res.writeHead(500);
-      res.write('<html>'+
+      res.write('<!doctype html>'+'<html>'+
           '<head>'+
             '<title>Socket.IO chat</title>'+
 
@@ -72,7 +71,7 @@ var port = process.env.PORT || 3000;
           '<body>'+
             '<ul id="messages"></ul>'+
             '<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>'+
-            '<script src="https://code.jquery.com/jquery-1.11.1.js"></script>'+
+            '<script src="http://code.jquery.com/jquery-1.11.1.js"></script>'+
             '<script>'+
               'var socket = io();'+
               'socket.on("chat message", function(msg){'+
