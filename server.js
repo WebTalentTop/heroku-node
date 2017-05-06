@@ -60,18 +60,34 @@ sockserver.on('connection', function(conn) {
 });
 var fs = require('fs');
 var port = process.env.PORT || 3000;
-fs.readFile("views/index.ejs", function(err, data){
+
   var server = http.createServer(
     function(req,res){
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.write(data);
+      res.writeHead(500);
+      res.write('<html>'+
+          '<head>'+
+            '<title>Socket.IO chat</title>'+
+
+          '</head>'+
+          '<body>'+
+            '<ul id="messages"></ul>'+
+            '<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>'+
+            '<script src="https://code.jquery.com/jquery-1.11.1.js"></script>'+
+            '<script>'+
+              'var socket = io();'+
+              'socket.on("chat message", function(msg){'+
+                '$("#messages").append($("<li>").text(msg));'+
+              '});'+
+            '</script>'+
+          '</body>'+
+        '</html>');
       res.end();
     }
   );
   sockserver.installHandlers(server, {prefix:'/sockserver'});
   server.listen(port); 
 
-});
+
 
 
 // var port = process.env.PORT || 4000;
