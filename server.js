@@ -21,14 +21,6 @@ var http = require('http'),
     sockjs = require('sockjs'),
     sockserver = sockjs.createServer(),
     connections = [];
-var http1 =require('http').Server(app);
-var io = require('socket.io')(http1);
-io.on('connection', function(socket){
-    socket.on('chat message', function(msg){
-        io.emit('chat message', msg_total);
-    });
-});
-
 sockserver.on('connection', function(conn) {
   console.log('Connected');
   msg_total+='Connected';
@@ -38,8 +30,9 @@ sockserver.on('connection', function(conn) {
   connections.push(conn);
   conn.on('data', function(msg) {
     console.log('Message: ' + msg);
+    conn.write(msg);
     msg_total+=msg;
-    io.sockets.emit('chat message', msg);
+    //io.sockets.emit('chat message', msg);
     // send the message to all clients
     for (var i=0; i < connections.length; ++i) {
       connections[i].write(msg);
@@ -69,14 +62,19 @@ var port = process.env.PORT || 3000;
 
           '</head>'+
           '<body>'+
-            '<ul id="messages"></ul>'+
-            '<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>'+
-            '<script src="http://code.jquery.com/jquery-1.11.1.js"></script>'+
+            '<div id="messages"></div>'+
+            '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>'+
+            '<script src="http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js"></script>'+
             '<script>'+
-              'var socket = io();'+
-              'socket.on("chat message", function(msg){'+
-                '$("#messages").append($("<li>").text(msg));'+
-              '});'+
+              'var sock = new SockJS("http://localhost:3000/sockserver");'+
+              'var sockjs_url = "/sockserver";'+
+              'var sockjs = new SockJS(sockjs_url);'+
+              'sockjs.onmessage = function(e)'+
+              '{console.log(e.data);'+
+              '$("#messages").append($("<div>").html(e.data));'+
+              '};'+
+                
+
             '</script>'+
           '</body>'+
         '</html>');
